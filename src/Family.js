@@ -32,14 +32,31 @@ class Family {
         }
     }
 
-    // Assigns a family member male gender
+    // Assigns a family member male gender, creates family member and assigns male gender if they do not exist
     male(personName) {
-        if(this.doesFamilyMemberExist(personName)) {
-            console.log('Assigning ', personName, ' Male gender');
+        // Checks if family member exists
+        if (this.doesFamilyMemberExist(personName)) {
             let familyMember = this.getFamilyMember(personName);
-            familyMember.gender = 'Male';
+            // Check if family member gender is already defined, define as male if not, show error message otherwise
+            if (familyMember.gender) {
+                console.log('Error: gender of', personName, 'is already defined as', familyMember.gender);
+                // Return true if already Male, return false otherwise
+                if (familyMember.gender === 'Male') {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                console.log('Assigning', personName, 'Male gender');
+                familyMember.gender = 'Male';
+                return true;
+            }
         } else {
             console.log('provided name does not match any current family member');
+            console.log('creating new family member', personName, 'and assigning Male gender');
+            this.addNewFamilyMember(personName);
+            this.male(personName);
+            return true;
         }
     }
 
