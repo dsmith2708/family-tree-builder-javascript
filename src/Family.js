@@ -10,14 +10,33 @@ class Family {
         });
     }
 
+    // Returns true if family member exists, false if they do not
+    doesFamilyMemberExist(personName) {
+        return this.familyMembers.some((person) => person.name == personName);
+    }
+
     // Adds new family member, will not add if another person already has the same name
     addNewFamilyMember(newMemberName) {
-        if (!this.familyMembers.some((person) => person.name === newMemberName)) {
+        // Checks if person with provided name currently exists, creates this new person if they do not
+        if (!this.doesFamilyMemberExist(newMemberName)) {
             this.familyMembers.push(new Person(newMemberName));
+            return true;
         } else {
             console.log('Error: person with this name already exists');
+            return false;
         }
     }
+
+    // Assigns a family member male gender
+    male(personName) {
+
+    }
+
+    // Assigns a family member female gender
+    female(personName) {
+
+    }
+
 }
 
 let family = new Family();
