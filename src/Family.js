@@ -69,7 +69,7 @@ class Family {
 
     // Assigns a family member female gender
     female(personName) {
-
+        this.assignGender(personName, 'Female');
     }
 
 }
