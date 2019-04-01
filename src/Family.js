@@ -68,33 +68,31 @@ class Family {
         return this.assignGender(personName, 'Female');
     }
 
-    // Returns true if a person is Male, or false if they are female, or if gender cannot be determined
-    isMale(name) {
+    // Checks if we can determine if a person is of a specific gender
+    isGender(name, gender) {
         // Check if family member exists
         if (this.doesFamilyMemberExist(name)) {
             let familyMember = this.getFamilyMember(name);
-            // Check if family member has gender defined, return true if this is male, false if it is not
+            // Check if family member has gender defined, return true if this matches provided value, false if it does not
             if (familyMember.gender) {
-                return familyMember.gender === 'Male';
-            } else if (familyMember.gender === 'Female') {
-                return false;
+                return familyMember.gender === gender;
             } else {
                 // If gender is not defined
                 // Check if we can determine gender through children
                 if (familyMember.children.length > 0) {
-                    let isMale = false;
+                    let matchesProvidedGender = false;
                     // See if children have another parent defined
                     familyMember.children.forEach((childName) => {
                         // If they do, get other parent and check gender
                         if (this.getFamilyMember(childName).parents.length >= 2) {
                             this.getFamilyMember(childName).parents.forEach((parentName) => {
                                 if (parentName !== name) {
-                                    isMale = this.getFamilyMember(parentName).gender === 'Female';
+                                    matchesProvidedGender = this.getFamilyMember(parentName).gender !== gender;
                                 }
                             })
                         }
                     });
-                    return isMale;
+                    return matchesProvidedGender;
                 } else {
                     return false;
                 }
@@ -103,6 +101,16 @@ class Family {
             console.log('Error: No family member found with name', name);
             return false;
         }
+    }
+
+    // Returns true if a person is Male, or false if they are female, or if gender cannot be determined
+    isMale(name) {
+        return this.isGender(name, 'Male');
+    }
+
+    // Returns true if a person is Female, or false if they are male, or if gender cannot be determined
+    isFemale(name) {
+        return this.isGender(name, 'Female');
     }
 
     // Prints and returns the parents of a given child
