@@ -9,7 +9,11 @@ class Family {
     }
 
     addNewFamilyMember(newMemberName) {
-        this.familyMembers.push(new Person(newMemberName));
+        if (!this.familyMembers.some((person) => person.name === newMemberName)) {
+            this.familyMembers.push(new Person(newMemberName));
+        } else {
+            console.log('Error: person with this name already exists');
+        }
     }
 }
 
