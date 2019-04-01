@@ -64,12 +64,12 @@ class Family {
 
     // Assigns a family member male gender, creates family member and assigns male gender if they do not exist
     male(personName) {
-        this.assignGender(personName, 'Male');
+        return this.assignGender(personName, 'Male');
     }
 
     // Assigns a family member female gender
     female(personName) {
-        this.assignGender(personName, 'Female');
+        return this.assignGender(personName, 'Female');
     }
 
 }
