@@ -68,17 +68,58 @@ class Family {
         return this.assignGender(personName, 'Female');
     }
 
+    // Returns true if a person is Male, or false if they are female, or if gender cannot be determined
+    isMale(name) {
+        // Check if family member exists
+        if (this.doesFamilyMemberExist(name)) {
+            let familyMember = this.getFamilyMember(name);
+            // Check if family member has gender defined, return true if this is male, false if it is not
+            if (familyMember.gender) {
+                return familyMember.gender === 'Male';
+            } else if (familyMember.gender === 'Female') {
+                return false;
+            } else {
+                // If gender is not defined
+                // Check if we can determine gender through children
+                if (familyMember.children.length > 0) {
+                    let isMale = false;
+                    // See if children have another parent defined
+                    familyMember.children.forEach((childName) => {
+                        // If they do, get other parent and check gender
+                        if (this.getFamilyMember(childName).parents.length >= 2) {
+                            this.getFamilyMember(childName).parents.forEach((parentName) => {
+                                if (parentName !== name) {
+                                    isMale = this.getFamilyMember(parentName).gender === 'Female';
+                                }
+                            })
+                        }
+                    });
+                    return isMale;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            console.log('Error: No family member found with name', name);
+            return false;
+        }
+    }
+
     // Prints and returns the parents of a given child
     getParents(childName) {
+        // Check if family member exists
         if (this.doesFamilyMemberExist(childName)) {
             let child = this.getFamilyMember(childName);
+            // Check if family member has parents defined
             if (child.parents.length <= 0) {
                 console.log('Error:', childName, 'does not have any parents');
             } else {
+                // Print and return parents in alphabetical order if they are defined
                 console.log('The parents of', childName, 'are:');
                 child.parents.sort().forEach((parentName) => {
                     console.log(parentName);
-                })
+                });
+                return child.parents.sort();
             }
         } else {
             console.log('Error: family member does not exist with name', childName);
@@ -87,15 +128,19 @@ class Family {
 
     // Prints and returns the children of a given parent
     getChildren(parentName) {
+        // Check if family member exists
         if (this.doesFamilyMemberExist(parentName)) {
             let parent = this.getFamilyMember(parentName);
+            // Check if family member has children defined
             if (parent.children.length <= 0) {
                 console.log('Error:', parentName, 'does not have any children');
             } else {
+                // Print and return children in alphabetical order if they are defined
                 console.log('The children of', parentName, 'are:');
                 parent.children.sort().forEach((childName) => {
                     console.log(childName)
-                })
+                });
+                return parent.children.sort();
             }
         } else {
             console.log('Error: family member does not exist with name', parentName);
