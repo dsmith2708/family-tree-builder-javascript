@@ -43,6 +43,18 @@ class Family {
                 // Return true if already provided value, return false otherwise
                 return familyMember.gender === gender;
             } else {
+                // Check make sure this assignment is not impossible
+                if (gender === 'Male') {
+                    if (this.isFemale(familyMember.name)) {
+                        console.log('Error: this gender assignment is not possible');
+                        return false;
+                    }
+                } else if (gender === 'Female') {
+                    if (this.isMale(familyMember.name)) {
+                        console.log('Error: this gender assignment is not possible');
+                        return false;
+                    }
+                }
                 // Assign provided gender if not currently defined
                 console.log('Assigning', personName, gender, 'gender');
                 familyMember.gender = gender;
@@ -87,7 +99,8 @@ class Family {
                         if (this.getFamilyMember(childName).parents.length >= 2) {
                             this.getFamilyMember(childName).parents.forEach((parentName) => {
                                 if (parentName !== name) {
-                                    matchesProvidedGender = this.getFamilyMember(parentName).gender !== gender;
+                                    matchesProvidedGender = this.getFamilyMember(parentName).gender !== undefined &&
+                                        this.getFamilyMember(parentName).gender !== gender;
                                 }
                             })
                         }
