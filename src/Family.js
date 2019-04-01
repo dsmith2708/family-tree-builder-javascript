@@ -68,11 +68,12 @@ class Family {
         return this.assignGender(personName, 'Female');
     }
 
+    // Prints and returns the parents of a given child
     getParents(childName) {
-        if(this.doesFamilyMemberExist(childName)) {
+        if (this.doesFamilyMemberExist(childName)) {
             let child = this.getFamilyMember(childName);
-            if(child.parents.length <= 0) {
-                console.log('Error: ', childName, 'does not have any parents');
+            if (child.parents.length <= 0) {
+                console.log('Error:', childName, 'does not have any parents');
             } else {
                 console.log('The parents of', childName, 'are:');
                 child.parents.sort().forEach((parentName) => {
@@ -81,6 +82,23 @@ class Family {
             }
         } else {
             console.log('Error: family member does not exist with name', childName);
+        }
+    }
+
+    // Prints and returns the children of a given parent
+    getChildren(parentName) {
+        if (this.doesFamilyMemberExist(parentName)) {
+            let parent = this.getFamilyMember(parentName);
+            if (parent.children.length <= 0) {
+                console.log('Error:', parentName, 'does not have any children');
+            } else {
+                console.log('The children of', parentName, 'are:');
+                parent.children.sort().forEach((childName) => {
+                    console.log(childName)
+                })
+            }
+        } else {
+            console.log('Error: family member does not exist with name', parentName);
         }
     }
 
@@ -114,7 +132,7 @@ class Family {
                 // If child already has one parent, 
                 let childCurrentParent = this.getFamilyMember(child.parents[0]);
                 // Check parent is not already defined as a parent of this child
-                if(childCurrentParent.name === parentName) {
+                if (childCurrentParent.name === parentName) {
                     console.log('Error:', parentName, 'is already a parent of', childName);
                     return false;
                 } else {
