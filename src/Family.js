@@ -8,6 +8,7 @@ class Family {
         this.familyMembers.forEach(person => {
             console.log(person.name);
         });
+        return this.familyMembers;
     }
 
     // Returns true if family member exists, false if they do not
