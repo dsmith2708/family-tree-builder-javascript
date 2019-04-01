@@ -158,6 +158,7 @@ class Family {
             // Check if family member has children defined
             if (parent.children.length <= 0) {
                 console.log('Error:', parentName, 'does not have any children');
+                return false;
             } else {
                 // Print and return children in alphabetical order if they are defined
                 console.log('The children of', parentName, 'are:');
@@ -168,6 +169,7 @@ class Family {
             }
         } else {
             console.log('Error: family member does not exist with name', parentName);
+            return false;
         }
     }
 
