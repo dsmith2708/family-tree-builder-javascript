@@ -68,6 +68,22 @@ class Family {
         return this.assignGender(personName, 'Female');
     }
 
+    getParents(childName) {
+        if(this.doesFamilyMemberExist(childName)) {
+            let child = this.getFamilyMember(childName);
+            if(child.parents.length <= 0) {
+                console.log('Error: ', childName, 'does not have any parents');
+            } else {
+                console.log('The parents of', childName, 'are:');
+                child.parents.sort().forEach((parentName) => {
+                    console.log(parentName);
+                })
+            }
+        } else {
+            console.log('Error: family member does not exist with name', childName);
+        }
+    }
+
     setParentOf(childName, parentName) {
         if (childName === parentName) {
             console.log('Error: a child cannot be their own parent');
