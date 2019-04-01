@@ -15,6 +15,11 @@ class Family {
         return this.familyMembers.some((person) => person.name == personName);
     }
 
+    // Returns family member with provided name
+    getFamilyMember(personName) {
+        return this.familyMembers.find((person) => person.name === personName);
+    }
+
     // Adds new family member, will not add if another person already has the same name
     addNewFamilyMember(newMemberName) {
         // Checks if person with provided name currently exists, creates this new person if they do not
@@ -29,7 +34,13 @@ class Family {
 
     // Assigns a family member male gender
     male(personName) {
-
+        if(this.doesFamilyMemberExist(personName)) {
+            console.log('Assigning ', personName, ' Male gender');
+            let familyMember = this.getFamilyMember(personName);
+            familyMember.gender = 'Male';
+        } else {
+            console.log('provided name does not match any current family member');
+        }
     }
 
     // Assigns a family member female gender
