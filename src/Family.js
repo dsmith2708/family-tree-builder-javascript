@@ -41,11 +41,7 @@ class Family {
             if (familyMember.gender) {
                 console.log('Error: gender of', personName, 'is already defined as', familyMember.gender);
                 // Return true if already provided value, return false otherwise
-                if (familyMember.gender === gender) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return familyMember.gender === gender;
             } else {
                 // Assign provided gender if not currently defined
                 console.log('Assigning', personName, gender, 'gender');
@@ -70,6 +66,77 @@ class Family {
     // Assigns a family member female gender
     female(personName) {
         return this.assignGender(personName, 'Female');
+    }
+
+    setParentOf(childName, parentName) {
+        if (childName === parentName) {
+            console.log('Error: a child cannot be their own parent');
+        } else {
+            // Check if person with childName already exists
+            let child;
+            if (this.doesFamilyMemberExist(childName)) {
+                child = this.getFamilyMember(childName);
+            } else {
+                console.log('No family member found with name', childName, 'creating new family member');
+                this.addNewFamilyMember(childName);
+                child = this.getFamilyMember(childName);
+            }
+            // Check if parent exists
+            let parent;
+            if (this.doesFamilyMemberExist(parentName)) {
+                parent = this.getFamilyMember(parentName);
+            } else {
+                console.log('no family member found with name', parentName, 'creating new family member');
+                this.addNewFamilyMember(parentName);
+                parent = this.getFamilyMember(parentName);
+            }
+            // Check if child already has two parents defined
+            if (child.parents.length >= 2) {
+                console.log('Error:', childName, 'already has two parents');
+                return false;
+            } else if (child.parents.length === 1) {
+                // If child already has one parent, 
+                let childCurrentParent = this.getFamilyMember(child.parents[0]);
+                // Check parent is not already defined as a parent of this child
+                if(childCurrentParent.name === parentName) {
+                    console.log('Error:', parentName, 'is already a parent of', childName);
+                    return false;
+                } else {
+                    // Make sure they do not share
+                    // the same gender as the parent we are currently defining
+                    if (childCurrentParent.gender === parent.gender && !childCurrentParent.gender === undefined) {
+                        console.log('Error: both parents cannot share the same gender');
+                        return false;
+                    } else {
+                        // Assign parent and child as this is valid
+                        console.log('assigning', parentName, 'as parent of', childName);
+                        child.parents.push(parentName);
+                        parent.children.push(childName);
+                        // Check if we can assume a parents gender if not defined
+                        if (!parent.gender) {
+                            if (childCurrentParent.gender) {
+                                if (childCurrentParent.gender === 'Male') {
+                                    this.female(parent.name);
+                                    return true;
+                                } else if (childCurrentParent.gender === 'Female') {
+                                    this.male(parent.name);
+                                    return true;
+                                }
+                            } else { return true }
+                        }
+                        return true;
+                    }
+                }
+            } else {
+                // If child currently has no parents
+                console.log('assigning', parentName, 'as parent of', childName);
+                child.parents.push(parentName);
+                parent.children.push(childName);
+                return true;
+            }
+
+
+        }
     }
 
 }
